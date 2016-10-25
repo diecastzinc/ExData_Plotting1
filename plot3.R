@@ -1,0 +1,17 @@
+household_power_consumption <- read.csv("household_power_consumption.txt", sep=";")
+household_power_consumption$Date <- as.Date(household_power_consumption$Date,format="%d/%m/%Y")
+household_power_consumption$Sub_metering_1 <- as.double(as.character(household_power_consumption$Sub_metering_1))
+household_power_consumption$Sub_metering_2 <- as.double(as.character(household_power_consumption$Sub_metering_2))
+household_power_consumption$Sub_metering_3 <- as.double(as.character(household_power_consumption$Sub_metering_3))
+hpc <- subset(household_power_consumption, Date>="2007-02-01" & Date<="2007-02-02")
+datetime <- strptime(paste(hpc$Date,hpc$Time), format="%Y-%m-%d %H:%M:%S")
+
+# Plot 3
+par(mfrow=c(1,1))
+plot(datetime, hpc$Sub_metering_1, xlab="", ylab="Energy sub metering", type="n")
+lines(datetime, hpc$Sub_metering_1, col="black")
+lines(datetime, hpc$Sub_metering_2, col="red")
+lines(datetime, hpc$Sub_metering_3, col="blue")
+legend("topright", legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty=c(1,1), col=c("black", "red", "blue"))
+dev.copy(png, filename="plot3.png")
+dev.off()
